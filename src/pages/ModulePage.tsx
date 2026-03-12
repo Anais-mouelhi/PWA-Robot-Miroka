@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useModules } from '../hooks/useModules';
 import { DEMO_MODULES } from '../data/demoModules';
@@ -21,6 +21,7 @@ export function ModulePage() {
   const [wrong, setWrong] = useState(false);
   const [timeLeft, setTimeLeft] = useState(TIMER_SECONDS);
   const [hintVisible, setHintVisible] = useState(false);
+  const confettiRef = useRef<HTMLDivElement>(null);
 
   const earnedPoints = validated.length * 100;
 
@@ -48,25 +49,81 @@ export function ModulePage() {
     }
   };
 
+  /* ── Confettis ── */
+  const CONFETTI_COLORS = ['#f59e0b', '#a855f7', '#06b6d4', '#ec4899', '#22c55e', '#ef4444', '#3b82f6'];
+  const confettiPieces = Array.from({ length: 32 }, (_, i) => ({
+    id: i,
+    color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+    left: `${Math.random() * 100}%`,
+    delay: `${Math.random() * 0.6}s`,
+    duration: `${0.9 + Math.random() * 0.8}s`,
+    size: Math.random() > 0.5 ? 8 : 6,
+    rotate: `${Math.random() * 360}deg`,
+  }));
+
   /* ── Validé ── */
   if (step === 'validated') {
     return (
-      <div className="h-dvh flex flex-col items-center justify-center text-white px-8 text-center gap-6"
-        style={{ background: 'linear-gradient(160deg, #0d0d1e 0%, #1a0a2e 100%)' }}>
-        <div className="w-24 h-24 rounded-full flex items-center justify-center text-5xl"
-          style={{ backgroundColor: `${mod.color}22`, border: `2px solid ${mod.color}`, boxShadow: `0 0 40px ${mod.color}66` }}>
-          ✓
+      <div className="h-dvh flex flex-col items-center justify-center text-white px-8 text-center"
+        style={{ background: '#0d0d1e' }}>
+
+        {/* Confettis */}
+        <div ref={confettiRef} className="absolute inset-0 overflow-hidden pointer-events-none z-10">
+          {confettiPieces.map((p) => (
+            <div key={p.id}
+              className="absolute top-0"
+              style={{
+                left: p.left,
+                width: p.size,
+                height: p.size * 1.6,
+                backgroundColor: p.color,
+                borderRadius: 2,
+                transform: `rotate(${p.rotate})`,
+                animation: `confettiFall ${p.duration} ${p.delay} ease-in forwards`,
+              }}
+            />
+          ))}
         </div>
-        <div>
-          <h2 className="font-bold text-2xl mb-1">Étape validée !</h2>
-          <p className="text-white/40 text-sm">{mod.name}</p>
-          <p className="text-yellow-400 font-bold mt-2">+200 pts</p>
+
+        <style>{`
+          @keyframes confettiFall {
+            0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0.4; }
+          }
+          @keyframes popIn {
+            0%   { transform: scale(0.5); opacity: 0; }
+            70%  { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+          }
+        `}</style>
+
+        <div className="relative z-20 flex flex-col items-center gap-6 w-full max-w-xs">
+
+          {/* Mascotte */}
+          <div style={{ animation: 'popIn 0.5s ease-out forwards' }}>
+            <img src="/miroki-happy.png" alt="Miroki content"
+              className="w-40 h-40 object-contain drop-shadow-2xl" />
+          </div>
+
+          {/* Texte */}
+          <div className="flex flex-col gap-2">
+            <h2 className="font-extrabold text-3xl text-white">Bravo !</h2>
+            <p className="font-bold text-xl text-white leading-snug">
+              Tu as débloqué un souvenir !
+            </p>
+            <p className="text-white/50 text-sm mt-1 leading-relaxed">
+              Tu as gagné 100 points,<br />continue l'aventure avec Miroki !
+            </p>
+          </div>
+
+          {/* Bouton */}
+          <button
+            onClick={() => navigate('/experience')}
+            className="w-full py-4 rounded-2xl font-bold text-white text-base transition-all hover:scale-105 active:scale-95"
+            style={{ background: '#a855f7', boxShadow: '0 0 24px #a855f766' }}>
+            Prochain niveau →
+          </button>
         </div>
-        <button onClick={() => navigate('/experience')}
-          className="w-full max-w-xs py-4 rounded-2xl font-bold text-white transition-all hover:scale-105 active:scale-95"
-          style={{ background: `linear-gradient(135deg, ${mod.color}, #7c3aed)`, boxShadow: `0 0 20px ${mod.color}55` }}>
-          Continuer →
-        </button>
       </div>
     );
   }
