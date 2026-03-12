@@ -45,6 +45,7 @@ export function FloorPlanEditor() {
   const [dragging, setDragging] = useState<string | null>(null);
   const [saving, setSaving] = useState<string | null>(null);
   const [savedIds, setSavedIds] = useState<string[]>([]);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const squareRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -166,30 +167,35 @@ export function FloorPlanEditor() {
           ↺ Réinitialiser
         </button>
         <button onClick={async () => {
+          if (loading) { setSaveError('Attends le chargement Firestore…'); return; }
           setSaving('all');
-          await Promise.all(displayModules.map((m) => {
-            const p = positions[m.id];
-            if (!p) return Promise.resolve();
-            const existsInFirestore = modules.some((fm) => fm.id === m.id);
-            if (!existsInFirestore) {
-              return saveModule({ ...m, position: { x: p.x, y: p.y } });
-            }
-            return updatePosition(m.id, p.x, p.y);
-          }));
+          setSaveError(null);
+          try {
+            await Promise.all(displayModules.map((m) => {
+              const p = positions[m.id];
+              if (!p) return Promise.resolve();
+              return updatePosition(m.id, p.x, p.y);
+            }));
+            setSavedIds(displayModules.map((m) => m.id));
+            setTimeout(() => setSavedIds([]), 2000);
+          } catch (e) {
+            setSaveError('Erreur Firestore — vérifie ta connexion');
+            console.error(e);
+          }
           setSaving(null);
-          setSavedIds(displayModules.map((m) => m.id));
-          setTimeout(() => setSavedIds([]), 1500);
-        }} disabled={saving === 'all'}
+        }} disabled={saving === 'all' || loading}
           className="px-3 py-2 rounded-xl text-xs font-bold text-white transition-all disabled:opacity-50"
           style={{ background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', boxShadow: '0 0 14px #3b82f633' }}>
-          {saving === 'all' ? '…' : '💾 Sauver'}
+          {saving === 'all' ? '⏳ Sauvegarde…' : '💾 Sauver'}
         </button>
       </header>
 
       {/* Info */}
       <div className="shrink-0 px-4 py-2 border-b border-white/5 bg-blue-500/5">
-        {loading ? (
-          <p className="text-yellow-400/70 text-xs text-center">⏳ Chargement des modules depuis Firestore…</p>
+        {saveError ? (
+          <p className="text-red-400 text-xs text-center font-semibold">⚠️ {saveError}</p>
+        ) : loading ? (
+          <p className="text-yellow-400/70 text-xs text-center">⏳ Chargement depuis Firestore…</p>
         ) : (
           <p className="text-blue-400/50 text-xs text-center">
             ✋ Maintenez et glissez · Sauvegarde auto au relâché · {modules.length} modules chargés
