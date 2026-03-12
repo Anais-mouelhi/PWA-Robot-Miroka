@@ -55,8 +55,15 @@ function ModuleNode({
   );
 }
 
-function ModuleModal({ mod, onClose, onPlay }: { mod: Module; onClose: () => void; onPlay: () => void }) {
+function ModuleModal({ mod, onClose, onPlay, onScan }: {
+  mod: Module;
+  onClose: () => void;
+  onPlay: () => void;
+  onScan: () => void;
+}) {
   const challengeCount = mod.challenge ? 1 : 0;
+  const isScanModule = mod.number === 2;
+
   return (
     <>
       {/* Overlay */}
@@ -83,9 +90,7 @@ function ModuleModal({ mod, onClose, onPlay }: { mod: Module; onClose: () => voi
             onClick={onClose}
             className="w-8 h-8 rounded-full flex items-center justify-center text-white/60 hover:text-white transition-colors shrink-0 ml-3"
             style={{ background: 'rgba(255,255,255,0.12)' }}
-          >
-            ✕
-          </button>
+          >✕</button>
         </div>
 
         {/* Étape 1 — Voir la vidéo */}
@@ -110,34 +115,58 @@ function ModuleModal({ mod, onClose, onPlay }: { mod: Module; onClose: () => voi
           </div>
         </div>
 
-        {/* Étape 2 — Jouer */}
+        {/* Étape 2 — Scanner ou Jouer */}
         <div className="px-5 pb-5">
           <div className="flex items-center gap-3 mb-3">
             <span className="w-7 h-7 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-xs font-bold shrink-0">2</span>
-            <span className="font-semibold text-base">Jouer</span>
+            <span className="font-semibold text-base">{isScanModule ? 'Scanner' : 'Jouer'}</span>
           </div>
 
-          {/* Carte jeu */}
-          <button
-            onClick={onPlay}
-            className="w-full flex items-center gap-4 px-4 py-4 rounded-xl transition-all active:scale-98"
-            style={{ background: '#7C4DFF', boxShadow: '0 4px 20px #7C4DFF55' }}
-          >
-            <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-              <span className="text-2xl">🎮</span>
-            </div>
-            <div className="text-left flex-1">
-              <p className="font-bold text-base">Jouer au jeu</p>
-              <p className="text-white/70 text-sm">{challengeCount} question · {challengeCount * 200} points</p>
-              <div className="flex gap-2 mt-2">
-                {['⏱ Timer', '💡 Indices', '⭐ Points'].map((tag) => (
-                  <span key={tag} className="text-xs px-2 py-0.5 rounded-full border border-white/30 text-white/80">
-                    {tag}
-                  </span>
-                ))}
+          {isScanModule ? (
+            /* Carte scanner */
+            <button
+              onClick={onScan}
+              className="w-full flex items-center gap-4 px-4 py-4 rounded-xl transition-all active:scale-98"
+              style={{ background: 'linear-gradient(135deg, #f97316, #ef4444)', boxShadow: '0 4px 20px #f9731655' }}
+            >
+              <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                <span className="text-2xl">📷</span>
               </div>
-            </div>
-          </button>
+              <div className="text-left flex-1">
+                <p className="font-bold text-base">Scanne la pièce</p>
+                <p className="text-white/80 text-sm">Trouve la pièce manquante !</p>
+                <div className="flex gap-2 mt-2">
+                  {['💡 Indices', '⭐ Points'].map((tag) => (
+                    <span key={tag} className="text-xs px-2 py-0.5 rounded-full border border-white/30 text-white/80">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </button>
+          ) : (
+            /* Carte jeu */
+            <button
+              onClick={onPlay}
+              className="w-full flex items-center gap-4 px-4 py-4 rounded-xl transition-all active:scale-98"
+              style={{ background: '#7C4DFF', boxShadow: '0 4px 20px #7C4DFF55' }}
+            >
+              <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                <span className="text-2xl">🎮</span>
+              </div>
+              <div className="text-left flex-1">
+                <p className="font-bold text-base">Jouer au jeu</p>
+                <p className="text-white/70 text-sm">{challengeCount} question · {challengeCount * 200} points</p>
+                <div className="flex gap-2 mt-2">
+                  {['⏱ Timer', '💡 Indices', '⭐ Points'].map((tag) => (
+                    <span key={tag} className="text-xs px-2 py-0.5 rounded-full border border-white/30 text-white/80">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </button>
+          )}
         </div>
       </div>
     </>
@@ -267,6 +296,7 @@ export function ExperiencePage() {
           mod={selectedModule}
           onClose={() => setSelectedModule(null)}
           onPlay={() => { setSelectedModule(null); navigate(`/module/${selectedModule.id}`); }}
+          onScan={() => { setSelectedModule(null); navigate('/scan'); }}
         />
       )}
 
