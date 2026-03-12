@@ -208,16 +208,37 @@ export function OnboardingPage() {
             </div>
           )}
 
-          {/* Enfants (famille) */}
+          {/* Adultes + Enfants (famille) */}
           {profile.mode === 'famille' && (
             <div className="mt-3 rounded-2xl border border-white/10 bg-white/3 p-4 flex flex-col gap-4">
-              {/* Nombre d'enfants */}
+
+              {/* Adultes */}
+              <div>
+                <p className="text-white/50 text-xs mb-2">Nombre d'adultes</p>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4, 5].map((n) => {
+                    const sel = profile.adultsCount === n;
+                    return (
+                      <button key={n} onClick={() => setProfile({ adultsCount: n })}
+                        className="w-10 h-10 rounded-xl font-bold text-sm border-2 transition-all"
+                        style={{
+                          borderColor: sel ? '#a855f7' : 'rgba(255,255,255,0.1)',
+                          background: sel ? '#a855f722' : 'transparent',
+                          color: sel ? '#a855f7' : 'rgba(255,255,255,0.4)',
+                        }}>
+                        {n}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Enfants */}
               <div>
                 <p className="text-white/50 text-xs mb-2">Nombre d'enfants</p>
                 <div className="flex gap-2">
                   {[1, 2, 3, 4, 5].map((n) => {
-                    const current = profile.children.length;
-                    const sel = current === n;
+                    const sel = profile.children.length === n;
                     return (
                       <button key={n}
                         onClick={() => {
