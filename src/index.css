@@ -8,15 +8,19 @@
 
 html, body, #root {
   height: 100%;
+  max-height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
   background-color: #0A0A14;
   color: white;
   font-family: Inter, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  /* Hauteur réelle sur mobile (évite le bug avec la barre du navigateur) */
+  height: 100dvh;
+  max-height: 100dvh;
 }
 
-/* Scrollbar discrète (verticale) */
-::-webkit-scrollbar { width: 4px; height: 0px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+/* Supprime toutes les scrollbars */
+::-webkit-scrollbar { width: 0px; height: 0px; }
+* { scrollbar-width: none; }
