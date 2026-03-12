@@ -21,7 +21,7 @@ const ROBOT_DEFAULT = { x: 50, y: 55 };
 
 export function FloorPlanEditor() {
   const navigate = useNavigate();
-  const { modules } = useModules();
+  const { modules, loading } = useModules();
   const displayModules = (modules.length > 0 ? modules : DEMO_MODULES)
     .slice().sort((a, b) => a.number - b.number);
 
@@ -97,17 +97,16 @@ export function FloorPlanEditor() {
       return;
     }
 
+    /* Sécurité : ne jamais écrire tant que Firestore n'a pas chargé */
+    if (loading) return;
+
     const pos = positions[id];
     if (!pos) return;
     setSaving(id);
-    const mod = displayModules.find((m) => m.id === id);
-    if (mod) {
-      const existsInFirestore = modules.some((m) => m.id === id);
-      if (!existsInFirestore) {
-        await saveModule({ ...mod, position: { x: pos.x, y: pos.y } });
-      } else {
-        await updatePosition(id, pos.x, pos.y);
-      }
+    try {
+      await updatePosition(id, pos.x, pos.y);
+    } catch (e) {
+      console.error('Erreur updatePosition:', e);
     }
     setSaving(null);
     setSavedIds((s) => [...s, id]);
@@ -189,9 +188,13 @@ export function FloorPlanEditor() {
 
       {/* Info */}
       <div className="shrink-0 px-4 py-2 border-b border-white/5 bg-blue-500/5">
-        <p className="text-blue-400/50 text-xs text-center">
-          ✋ Maintenez et glissez · Sauvegarde auto au relâché · Position identique au plan visiteur
-        </p>
+        {loading ? (
+          <p className="text-yellow-400/70 text-xs text-center">⏳ Chargement des modules depuis Firestore…</p>
+        ) : (
+          <p className="text-blue-400/50 text-xs text-center">
+            ✋ Maintenez et glissez · Sauvegarde auto au relâché · {modules.length} modules chargés
+          </p>
+        )}
       </div>
 
       {/* Zone plan — identique à ExperiencePage */}

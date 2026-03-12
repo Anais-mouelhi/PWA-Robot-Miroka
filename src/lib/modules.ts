@@ -20,7 +20,7 @@ export function subscribeModules(cb: (modules: Module[]) => void) {
 }
 
 export async function saveModule(module: Module) {
-  await setDoc(doc(db, COL, module.id), module);
+  await setDoc(doc(db, COL, module.id), module, { merge: true });
 }
 
 export async function deleteModule(id: string) {
