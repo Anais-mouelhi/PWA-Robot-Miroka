@@ -167,11 +167,34 @@ export function ExperiencePage() {
       }}>
       <div className="absolute inset-0 pointer-events-none z-0" style={{ background: 'rgba(5,3,20,0.10)' }} />
 
+      {/* Header fixe — titre + badges */}
+      <header className="relative z-20 shrink-0 flex flex-col items-center pt-12 pb-4 px-5 gap-3">
+        <h1 className="text-white font-extrabold uppercase tracking-widest"
+          style={{ fontSize: 22, letterSpacing: '0.15em', textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}>
+          LES MINIMOYS
+        </h1>
+        <div className="flex items-start gap-12">
+          <button onClick={() => navigate('/dashboard')} className="flex flex-col items-center gap-1 transition-transform active:scale-95">
+            <span className="font-extrabold text-white text-xl px-7 py-2"
+              style={{ background: '#F3AD35', boxShadow: '0 4px 16px #F3AD3566', minWidth: 80, textAlign: 'center', borderRadius: 9 }}>
+              {done}/{total}
+            </span>
+            <span className="text-white/80 text-lg font-semibold">Souvenirs</span>
+          </button>
+          <button onClick={() => navigate('/dashboard')} className="flex flex-col items-center gap-1 transition-transform active:scale-95">
+            <span className="font-extrabold text-white text-xl px-7 py-2 flex items-center gap-1.5"
+              style={{ background: '#F3AD35', boxShadow: '0 4px 16px #F3AD3566', minWidth: 104, justifyContent: 'center', borderRadius: 9 }}>
+              <span>⭐</span> {points} pts
+            </span>
+            <span className="text-white/80 text-lg font-semibold">Score</span>
+          </button>
+        </div>
+      </header>
 
-      {/* Carte chemin — plein écran */}
+      {/* Carte chemin */}
       <main className="flex-1 relative z-10 overflow-hidden">
 
-        {/* Robot + titre + badges — groupés ensemble */}
+        {/* Robot + bulle */}
         {(() => {
           let rx = 50, ry = 55;
           try {
@@ -180,72 +203,17 @@ export function ExperiencePage() {
           } catch { /* ignore */ }
           return (
             <>
-              {/* Titre en haut fixe */}
-              <h1 className="absolute z-30 w-full text-center text-white font-extrabold uppercase tracking-widest pointer-events-none"
-                style={{ top: 96, left: 0, fontSize: 24, letterSpacing: '0.15em', textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}>
-                LES MINIMOYS
-              </h1>
-
-              {/* Badges juste au-dessus du robot */}
-              <div
-                className="absolute z-30 flex flex-col items-center gap-2 pointer-events-none w-full"
-                style={{ left: 0, top: `${ry}%`, transform: `translateY(calc(-100% - 136px))` }}
-              >
-                <div className="flex items-start gap-12 pointer-events-auto">
-                  <button onClick={() => navigate('/dashboard')} className="flex flex-col items-center gap-1 transition-transform active:scale-95">
-                    <span className="font-extrabold text-white text-xl px-7 py-2"
-                      style={{ background: '#F3AD35', boxShadow: '0 4px 16px #F3AD3566', minWidth: 80, textAlign: 'center', borderRadius: 9 }}>
-                      {done}/{total}
-                    </span>
-                    <span className="text-white/80 text-lg font-semibold">Souvenirs</span>
-                  </button>
-                  <button onClick={() => navigate('/dashboard')} className="flex flex-col items-center gap-1 transition-transform active:scale-95">
-                    <span className="font-extrabold text-white text-xl px-7 py-2 flex items-center gap-1.5"
-                      style={{ background: '#F3AD35', boxShadow: '0 4px 16px #F3AD3566', minWidth: 104, justifyContent: 'center', borderRadius: 9 }}>
-                      <span>⭐</span> {points} pts
-                    </span>
-                    <span className="text-white/80 text-lg font-semibold">Score</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Bulle du robot */}
-              <div
-                className="absolute z-25 pointer-events-none"
-                style={{
-                  left: `${rx}%`,
-                  top: `${ry}%`,
-                  transform: 'translate(32px, -120%)',
-                }}
-              >
-                <div
-                  className="text-white font-semibold text-center leading-snug px-4 py-3"
-                  style={{
-                    fontSize: 14,
-                    border: '1.5px solid rgba(255,255,255,0.6)',
-                    background: 'rgba(10,6,30,0.55)',
-                    backdropFilter: 'blur(4px)',
-                    borderRadius: 4,
-                    whiteSpace: 'nowrap',
-                  }}
-                >
+              {/* Bulle */}
+              <div className="absolute z-25 pointer-events-none"
+                style={{ left: `${rx}%`, top: `${ry}%`, transform: 'translate(32px, -120%)' }}>
+                <div className="text-white font-semibold text-center leading-snug px-4 py-3"
+                  style={{ fontSize: 14, border: '1.5px solid rgba(255,255,255,0.6)', background: 'rgba(10,6,30,0.55)', backdropFilter: 'blur(4px)', borderRadius: 4, whiteSpace: 'nowrap' }}>
                   Alors, on arrive ?<br />Je vous attends !!
                 </div>
               </div>
-
               {/* Robot */}
-              <img
-                src="/robot-plan.svg"
-                alt="Miroki"
-                className="absolute z-20 pointer-events-none"
-                style={{
-                  width: 80,
-                  left: `${rx}%`,
-                  top: `${ry}%`,
-                  transform: 'translate(-50%, -50%)',
-                  filter: 'drop-shadow(0 0 18px #a855f799)',
-                }}
-              />
+              <img src="/robot-plan.svg" alt="Miroki" className="absolute z-20 pointer-events-none"
+                style={{ width: 80, left: `${rx}%`, top: `${ry}%`, transform: 'translate(-50%, -50%)', filter: 'drop-shadow(0 0 18px #a855f799)' }} />
             </>
           );
         })()}
