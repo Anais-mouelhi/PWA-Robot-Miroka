@@ -108,9 +108,8 @@ export function OnboardingPage() {
   };
   const avatarFilter = COLOR_FILTER[profile.color] ?? 'hue-rotate(0deg)';
   const isGroup = profile.mode === 'groupe' || profile.mode === 'famille';
-  const childrenOk = profile.children.every(c => c.age !== null);
-  const familleOk = profile.mode !== 'famille' || (profile.children.length > 0 && childrenOk);
-  const groupeOk  = profile.mode !== 'groupe'  || childrenOk;
+  const familleOk = profile.mode !== 'famille' || profile.children.length > 0;
+  const groupeOk  = true;
   const ageOk = (profile.mode === 'famille' || profile.mode === 'groupe') || !!profile.age;
   const canSubmit = !!profile.mode && nameInput.trim().length > 0 && ageOk && familleOk && groupeOk;
 
@@ -201,41 +200,10 @@ export function OnboardingPage() {
                 </div>
               </div>
 
-              {/* Tranche d'âge par enfant */}
               {profile.children.length > 0 && (
-                <div className="flex flex-col gap-3">
-                  {profile.children.map((child, idx) => (
-                    <div key={idx}>
-                      <p className="text-white/40 text-xs mb-2">Enfant {idx + 1}</p>
-                      <div className="grid grid-cols-4 gap-1.5">
-                        {([
-                          { value: 'enfant' as AgeRange, label: '3-15' },
-                          { value: 'ado'    as AgeRange, label: '16-17' },
-                          { value: 'adulte' as AgeRange, label: '18-59' },
-                          { value: 'senior' as AgeRange, label: '60+' },
-                        ]).map(({ value, label }) => {
-                          const sel = child.age === value;
-                          return (
-                            <button key={value}
-                              onClick={() => {
-                                const updated = [...profile.children];
-                                updated[idx] = { ...updated[idx], age: value };
-                                setProfile({ children: updated });
-                              }}
-                              className="py-2 rounded-xl border-2 text-center transition-all text-xs font-semibold"
-                              style={{
-                                borderColor: sel ? '#a855f7' : 'rgba(255,255,255,0.08)',
-                                background: sel ? '#a855f722' : 'rgba(255,255,255,0.03)',
-                                color: sel ? '#a855f7' : 'rgba(255,255,255,0.5)',
-                              }}>
-                              {label}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-white/40 text-xs italic">
+                  👶 Les enfants sont considérés comme ayant 15 ans ou moins.
+                </p>
               )}
             </div>
           )}
@@ -271,41 +239,10 @@ export function OnboardingPage() {
                 </div>
               </div>
 
-              {/* Tranche d'âge par enfant */}
               {profile.children.length > 0 && (
-                <div className="flex flex-col gap-3">
-                  {profile.children.map((child, idx) => (
-                    <div key={idx}>
-                      <p className="text-white/40 text-xs mb-2">Enfant {idx + 1}</p>
-                      <div className="grid grid-cols-4 gap-1.5">
-                        {([
-                          { value: 'enfant' as AgeRange, label: '3-15' },
-                          { value: 'ado'    as AgeRange, label: '16-17' },
-                          { value: 'adulte' as AgeRange, label: '18-59' },
-                          { value: 'senior' as AgeRange, label: '60+' },
-                        ]).map(({ value, label }) => {
-                          const sel = child.age === value;
-                          return (
-                            <button key={value}
-                              onClick={() => {
-                                const updated = [...profile.children];
-                                updated[idx] = { ...updated[idx], age: value };
-                                setProfile({ children: updated });
-                              }}
-                              className="py-2 rounded-xl border-2 text-center transition-all text-xs font-semibold"
-                              style={{
-                                borderColor: sel ? '#a855f7' : 'rgba(255,255,255,0.08)',
-                                background: sel ? '#a855f722' : 'rgba(255,255,255,0.03)',
-                                color: sel ? '#a855f7' : 'rgba(255,255,255,0.5)',
-                              }}>
-                              {label}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-white/40 text-xs italic">
+                  👶 Les enfants sont considérés comme ayant 15 ans ou moins.
+                </p>
               )}
             </div>
           )}
