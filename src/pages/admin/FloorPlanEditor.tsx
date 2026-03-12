@@ -2,7 +2,7 @@ import { useRef, useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useModules } from '../../hooks/useModules';
 import { DEMO_MODULES } from '../../data/demoModules';
-import { updatePosition, saveModule } from '../../lib/modules';
+import { updatePosition } from '../../lib/modules';
 import type { Module } from '../../types';
 
 /* Positions par défaut le long du chemin — identique à ExperiencePage */
