@@ -46,7 +46,7 @@ export function DashboardPage() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-hidden flex flex-col p-4 gap-4">
+      <div className="flex-1 overflow-y-auto flex flex-col p-4 gap-4">
 
         {/* Score + progression */}
         <div className="shrink-0 grid grid-cols-3 gap-3">
@@ -156,9 +156,9 @@ export function DashboardPage() {
         </div>
 
         {/* Liste étapes */}
-        <div className="flex-1 overflow-hidden flex flex-col">
-          <p className="text-white/40 text-xs uppercase tracking-widest mb-2 shrink-0">Étapes</p>
-          <div className="flex-1 overflow-y-auto space-y-1.5">
+        <div className="flex flex-col pb-4">
+          <p className="text-white/40 text-xs uppercase tracking-widest mb-2">Étapes</p>
+          <div className="space-y-1.5">
             {displayModules.map((mod) => {
               const isValidated = validated.includes(mod.id);
               return (
