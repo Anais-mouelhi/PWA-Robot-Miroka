@@ -105,9 +105,12 @@ export function FloorPlanEditor() {
     if (!pos) return;
     setSaving(id);
     try {
-      await updatePosition(id, pos.x, pos.y);
+      await Promise.race([
+        updatePosition(id, pos.x, pos.y),
+        new Promise<void>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000)),
+      ]);
     } catch (e) {
-      console.error('Erreur updatePosition:', e);
+      console.error('updatePosition:', e);
     }
     setSaving(null);
     setSavedIds((s) => [...s, id]);
@@ -170,17 +173,25 @@ export function FloorPlanEditor() {
           if (loading) { setSaveError('Attends le chargement Firestore…'); return; }
           setSaving('all');
           setSaveError(null);
+          const timeout = new Promise<void>((_, reject) =>
+            setTimeout(() => reject(new Error('timeout')), 6000)
+          );
           try {
-            await Promise.all(displayModules.map((m) => {
-              const p = positions[m.id];
-              if (!p) return Promise.resolve();
-              return updatePosition(m.id, p.x, p.y);
-            }));
+            await Promise.race([
+              Promise.all(displayModules.map((m) => {
+                const p = positions[m.id];
+                if (!p) return Promise.resolve();
+                return updatePosition(m.id, p.x, p.y);
+              })),
+              timeout,
+            ]);
             setSavedIds(displayModules.map((m) => m.id));
             setTimeout(() => setSavedIds([]), 2000);
-          } catch (e) {
-            setSaveError('Erreur Firestore — vérifie ta connexion');
-            console.error(e);
+          } catch (e: unknown) {
+            const msg = e instanceof Error && e.message === 'timeout'
+              ? 'Délai dépassé — positions sauvegardées localement'
+              : 'Erreur Firestore — vérifie ta connexion';
+            setSaveError(msg);
           }
           setSaving(null);
         }} disabled={saving === 'all' || loading}
