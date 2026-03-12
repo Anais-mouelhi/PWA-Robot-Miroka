@@ -167,32 +167,32 @@ export function ExperiencePage() {
       }}>
       <div className="absolute inset-0 pointer-events-none z-0" style={{ background: 'rgba(5,3,20,0.10)' }} />
 
-      {/* Header fixe — titre + badges */}
-      <header className="relative z-20 shrink-0 flex flex-col items-center pt-12 pb-4 px-5 gap-3">
+      {/* Header flottant par-dessus la carte — ne décale pas les modules */}
+      <header className="absolute top-0 left-0 right-0 z-40 flex flex-col items-center pt-12 pb-4 px-5 gap-3 pointer-events-none">
         <h1 className="text-white font-extrabold uppercase tracking-widest"
-          style={{ fontSize: 22, letterSpacing: '0.15em', textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}>
+          style={{ fontSize: 22, letterSpacing: '0.15em', textShadow: '0 2px 16px rgba(0,0,0,1)' }}>
           LES MINIMOYS
         </h1>
-        <div className="flex items-start gap-12">
+        <div className="flex items-start gap-12 pointer-events-auto">
           <button onClick={() => navigate('/dashboard')} className="flex flex-col items-center gap-1 transition-transform active:scale-95">
             <span className="font-extrabold text-white text-xl px-7 py-2"
               style={{ background: '#F3AD35', boxShadow: '0 4px 16px #F3AD3566', minWidth: 80, textAlign: 'center', borderRadius: 9 }}>
               {done}/{total}
             </span>
-            <span className="text-white/80 text-lg font-semibold">Souvenirs</span>
+            <span className="text-white/80 text-lg font-semibold" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.8)' }}>Souvenirs</span>
           </button>
           <button onClick={() => navigate('/dashboard')} className="flex flex-col items-center gap-1 transition-transform active:scale-95">
             <span className="font-extrabold text-white text-xl px-7 py-2 flex items-center gap-1.5"
               style={{ background: '#F3AD35', boxShadow: '0 4px 16px #F3AD3566', minWidth: 104, justifyContent: 'center', borderRadius: 9 }}>
               <span>⭐</span> {points} pts
             </span>
-            <span className="text-white/80 text-lg font-semibold">Score</span>
+            <span className="text-white/80 text-lg font-semibold" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.8)' }}>Score</span>
           </button>
         </div>
       </header>
 
-      {/* Carte chemin */}
-      <main className="flex-1 relative z-10 overflow-hidden">
+      {/* Carte chemin — plein écran */}
+      <main className="absolute inset-0 z-10 overflow-hidden">
 
         {/* Robot + bulle */}
         {(() => {
