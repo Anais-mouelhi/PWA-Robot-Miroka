@@ -28,7 +28,7 @@ export function RewardPage() {
   const isGroup = profile.mode === 'groupe' || profile.mode === 'famille';
 
   return (
-    <div className="h-screen bg-[#0A0A14] flex flex-col overflow-hidden relative text-white">
+    <div className="h-dvh bg-[#0A0A14] flex flex-col overflow-hidden relative text-white">
 
       {/* Halos décoratifs */}
       <div className="absolute w-80 h-80 rounded-full opacity-20 blur-3xl pointer-events-none"

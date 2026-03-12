@@ -25,7 +25,7 @@ export function AdminLoginPage() {
   };
 
   return (
-    <div className="h-screen bg-[#0A0A14] flex flex-col items-center justify-center px-6 overflow-hidden relative">
+    <div className="h-dvh bg-[#0A0A14] flex flex-col items-center justify-center px-6 overflow-hidden relative">
 
       <div className="absolute w-72 h-72 rounded-full opacity-10 blur-3xl pointer-events-none"
         style={{ background: '#3b82f6', top: '0%', left: '50%', transform: 'translateX(-50%)' }} />

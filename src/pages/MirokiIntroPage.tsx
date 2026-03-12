@@ -47,7 +47,7 @@ export function MirokiIntroPage() {
 
   return (
     <div
-      className="h-screen flex flex-col items-center justify-between overflow-hidden px-6 py-10 relative"
+      className="h-dvh flex flex-col items-center justify-between overflow-hidden px-6 py-10 relative"
       onClick={next}
     >
       {/* Image de fond */}

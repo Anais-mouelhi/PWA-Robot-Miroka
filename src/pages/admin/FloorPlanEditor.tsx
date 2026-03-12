@@ -151,7 +151,7 @@ export function FloorPlanEditor() {
   const getPos = (mod: Module) => positions[mod.id] ?? { x: 50, y: 50 };
 
   return (
-    <div className="h-screen bg-[#0A0A14] flex flex-col overflow-hidden text-white">
+    <div className="h-dvh bg-[#0A0A14] flex flex-col overflow-hidden text-white">
 
       {/* Header */}
       <header className="shrink-0 px-5 pt-5 pb-4 flex items-center gap-2 border-b border-white/5">

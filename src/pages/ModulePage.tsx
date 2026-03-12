@@ -33,7 +33,7 @@ export function ModulePage() {
   }, [timeLeft, step, chosen]);
 
   if (!mod) return (
-    <div className="flex items-center justify-center h-screen bg-[#0d0d1e] text-white/40">Module introuvable</div>
+    <div className="flex items-center justify-center h-dvh bg-[#0d0d1e] text-white/40">Module introuvable</div>
   );
 
   const handleAnswer = (idx: number) => {
@@ -51,7 +51,7 @@ export function ModulePage() {
   /* ── Validé ── */
   if (step === 'validated') {
     return (
-      <div className="h-screen flex flex-col items-center justify-center text-white px-8 text-center gap-6"
+      <div className="h-dvh flex flex-col items-center justify-center text-white px-8 text-center gap-6"
         style={{ background: 'linear-gradient(160deg, #0d0d1e 0%, #1a0a2e 100%)' }}>
         <div className="w-24 h-24 rounded-full flex items-center justify-center text-5xl"
           style={{ backgroundColor: `${mod.color}22`, border: `2px solid ${mod.color}`, boxShadow: `0 0 40px ${mod.color}66` }}>
@@ -74,7 +74,7 @@ export function ModulePage() {
   const challenge = mod.challenge;
 
   return (
-    <div className="h-screen flex flex-col text-white overflow-hidden"
+    <div className="h-dvh flex flex-col text-white overflow-hidden"
       style={{ background: 'linear-gradient(160deg, #0d0d1e 0%, #1a0a2e 100%)' }}>
 
       {/* Header */}

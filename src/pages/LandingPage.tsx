@@ -6,7 +6,7 @@ export function LandingPage() {
   const { profile } = useProfile();
 
   return (
-    <div className="h-screen bg-[#0A0A14] flex flex-col items-center justify-center overflow-hidden relative">
+    <div className="h-dvh bg-[#0A0A14] flex flex-col items-center justify-center overflow-hidden relative">
 
       <div className="absolute w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none"
         style={{ background: '#a855f7', top: '5%', left: '50%', transform: 'translateX(-50%)' }} />

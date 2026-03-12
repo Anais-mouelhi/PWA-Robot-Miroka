@@ -7,20 +7,17 @@
 }
 
 html, body, #root {
-  height: 100%;
-  max-height: 100%;
+  height: 100dvh;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   background-color: #0A0A14;
   color: white;
   font-family: Inter, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-  /* Hauteur réelle sur mobile (évite le bug avec la barre du navigateur) */
-  height: 100dvh;
-  max-height: 100dvh;
+  /* Bloque le scroll au niveau du document uniquement */
+  overflow: clip;
 }
 
-/* Supprime toutes les scrollbars */
+/* Supprime les scrollbars visibles partout */
 ::-webkit-scrollbar { width: 0px; height: 0px; }
 * { scrollbar-width: none; }

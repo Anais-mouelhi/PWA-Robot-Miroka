@@ -68,7 +68,7 @@ export function QRScanPage() {
   };
 
   return (
-    <div className="h-screen bg-[#0A0A14] flex flex-col overflow-hidden text-white">
+    <div className="h-dvh bg-[#0A0A14] flex flex-col overflow-hidden text-white">
 
       {/* Header */}
       <header className="shrink-0 px-5 pt-6 pb-4 flex items-center gap-3 border-b border-white/5">

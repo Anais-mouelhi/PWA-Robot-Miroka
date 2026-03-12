@@ -157,7 +157,7 @@ export function ExperiencePage() {
   const points = done * 100;
 
   return (
-    <div className="h-screen text-white flex flex-col overflow-hidden relative"
+    <div className="h-dvh text-white flex flex-col overflow-hidden relative"
       style={{
         backgroundImage: 'url(/experience-bg.png)',
         backgroundSize: 'cover',

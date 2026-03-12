@@ -22,7 +22,7 @@ export function OnboardingPage() {
 
   /* ── WELCOME ── */
   if (step === 'welcome') return (
-    <div className="h-screen overflow-hidden relative" style={{ background: 'linear-gradient(180deg, #621F4A 0%, #004AAD 100%)' }}>
+    <div className="h-dvh overflow-hidden relative" style={{ background: 'linear-gradient(180deg, #621F4A 0%, #004AAD 100%)' }}>
 
       {/* ── Personnage en fond plein écran ── */}
       <img
@@ -115,7 +115,7 @@ export function OnboardingPage() {
   const canSubmit = !!profile.mode && nameInput.trim().length > 0 && ageOk && familleOk && groupeOk;
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden text-white" style={{ background: 'linear-gradient(180deg, #621F4A 0%, #004AAD 100%)' }} >
+    <div className="h-dvh flex flex-col overflow-hidden text-white" style={{ background: 'linear-gradient(180deg, #621F4A 0%, #004AAD 100%)' }} >
 
       {/* Header */}
       <header className="shrink-0 px-5 pt-6 pb-3 flex items-center gap-3 border-b border-white/5">
