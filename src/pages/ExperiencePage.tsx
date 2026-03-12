@@ -147,7 +147,8 @@ function ModuleModal({ mod, onClose, onPlay }: { mod: Module; onClose: () => voi
 export function ExperiencePage() {
   const navigate = useNavigate();
   const { modules } = useModules();
-  const displayModules = modules.length > 0 ? modules : DEMO_MODULES;
+  const displayModules = (modules.length > 0 ? modules : DEMO_MODULES)
+    .slice().sort((a, b) => a.number - b.number);
   const { validated } = useProgress();
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
 

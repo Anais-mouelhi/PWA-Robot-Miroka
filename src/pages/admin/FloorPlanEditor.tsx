@@ -22,7 +22,8 @@ const ROBOT_DEFAULT = { x: 50, y: 55 };
 export function FloorPlanEditor() {
   const navigate = useNavigate();
   const { modules } = useModules();
-  const displayModules = modules.length > 0 ? modules : DEMO_MODULES;
+  const displayModules = (modules.length > 0 ? modules : DEMO_MODULES)
+    .slice().sort((a, b) => a.number - b.number);
 
   const [positions, setPositions] = useState<Record<string, { x: number; y: number }>>(() => {
     const init: Record<string, { x: number; y: number }> = {};
