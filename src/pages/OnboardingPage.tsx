@@ -327,7 +327,7 @@ export function OnboardingPage() {
             <div className="grid grid-cols-3 gap-2">
               {([
                 { value: 'enfant'  as AgeRange, label: '3-15 ans' },
-                { value: 'adulte'  as AgeRange, label: '18-59 ans' },
+                { value: 'adulte'  as AgeRange, label: '16-59 ans' },
                 { value: 'senior'  as AgeRange, label: '60 ans +' },
               ]).map(({ value, label }) => {
                 const selected = profile.age === value;
