@@ -324,10 +324,9 @@ export function OnboardingPage() {
         {profile.mode !== 'famille' && profile.mode !== 'groupe' && (
           <div>
             <p className="text-white text-base font-bold mb-3">Tranche d'âge</p>
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               {([
                 { value: 'enfant'  as AgeRange, label: '3-15 ans' },
-                { value: 'ado'     as AgeRange, label: '16-17 ans' },
                 { value: 'adulte'  as AgeRange, label: '18-59 ans' },
                 { value: 'senior'  as AgeRange, label: '60 ans +' },
               ]).map(({ value, label }) => {
