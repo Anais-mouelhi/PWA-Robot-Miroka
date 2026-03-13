@@ -250,6 +250,7 @@ export function ExperiencePage() {
     .slice().sort((a, b) => a.number - b.number);
   const { validated } = useProgress();
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
+  const [showScanMission, setShowScanMission] = useState(false);
   const [robotPos, setRobotPos] = useState<{ x: number; y: number }>(() => {
     try {
       const saved = localStorage.getItem('miroki-robot-position');
@@ -332,7 +333,7 @@ export function ExperiencePage() {
               <ModuleNode
                 mod={mod}
                 isValidated={isValidated}
-                onClick={() => setSelectedModule(mod)}
+                onClick={() => { setSelectedModule(mod); setShowScanMission(false); }}
               />
             </div>
           );
@@ -365,20 +366,20 @@ export function ExperiencePage() {
       </main>
 
       {/* Modal module */}
-      {selectedModule && selectedModule.number === 2 && (
+      {selectedModule && showScanMission && (
         <ScanMissionModal
           mod={selectedModule}
-          onClose={() => setSelectedModule(null)}
-          onScan={() => { setSelectedModule(null); navigate('/scan'); }}
+          onClose={() => { setSelectedModule(null); setShowScanMission(false); }}
+          onScan={() => { setSelectedModule(null); setShowScanMission(false); navigate('/scan'); }}
         />
       )}
 
-      {selectedModule && selectedModule.number !== 2 && (
+      {selectedModule && !showScanMission && (
         <ModuleModal
           mod={selectedModule}
           onClose={() => setSelectedModule(null)}
           onPlay={() => { setSelectedModule(null); navigate(`/module/${selectedModule.id}`); }}
-          onScan={() => { setSelectedModule(null); navigate('/scan'); }}
+          onScan={() => setShowScanMission(true)}
         />
       )}
 
