@@ -55,6 +55,75 @@ function ModuleNode({
   );
 }
 
+function ScanMissionModal({ mod, onClose, onScan }: {
+  mod: Module;
+  onClose: () => void;
+  onScan: () => void;
+}) {
+  return (
+    <>
+      {/* Overlay */}
+      <div className="fixed inset-0 z-50 bg-black/60" onClick={onClose} />
+
+      {/* Carte */}
+      <div
+        className="fixed z-50 left-4 right-4 bottom-6 rounded-2xl overflow-hidden text-white flex flex-col"
+        style={{
+          background: 'rgba(20, 16, 40, 0.85)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          border: '1px solid rgba(255,255,255,0.12)',
+          boxShadow: '0 -8px 40px rgba(0,0,0,0.6)',
+        }}
+      >
+        {/* Header */}
+        <div className="flex items-start justify-between px-5 pt-5 pb-2">
+          <div>
+            <h2 className="font-bold text-xl">Souvenir N°{mod.number}</h2>
+            <p className="text-white/50 text-sm mt-0.5">{mod.name}</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 rounded-full flex items-center justify-center text-white/60 hover:text-white transition-colors shrink-0 ml-3"
+            style={{ background: 'rgba(255,255,255,0.12)' }}
+          >✕</button>
+        </div>
+
+        {/* Image de l'objet */}
+        <div className="flex items-center justify-center px-8 py-4">
+          <img
+            src="/miroki-hand.png"
+            alt="La main de Miroki"
+            className="w-48 h-48 object-contain drop-shadow-2xl"
+            style={{ filter: 'drop-shadow(0 8px 32px rgba(168,85,247,0.4))' }}
+          />
+        </div>
+
+        {/* Texte mission */}
+        <div className="px-5 pb-5 flex flex-col gap-4">
+          <p className="text-white/70 text-sm leading-relaxed">
+            Durant son voyage pour la Terre, Miroki a perdu la mémoire, et aussi quelques pièces !<br />
+            Peux-tu l'aider à les retrouver ?
+          </p>
+          <p className="text-white text-sm leading-relaxed">
+            <span className="font-bold">Ta mission :</span><br />
+            Assemble les pièces pour reconstruire sa main.
+          </p>
+
+          {/* Bouton scanner */}
+          <button
+            onClick={onScan}
+            className="w-full py-4 rounded-2xl font-bold text-white text-base transition-all hover:scale-105 active:scale-95"
+            style={{ background: '#a855f7', boxShadow: '0 0 24px #a855f766' }}
+          >
+            Scanner la pièce →
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}
+
 function ModuleModal({ mod, onClose, onPlay, onScan }: {
   mod: Module;
   onClose: () => void;
@@ -291,7 +360,15 @@ export function ExperiencePage() {
       </main>
 
       {/* Modal module */}
-      {selectedModule && (
+      {selectedModule && selectedModule.number === 2 && (
+        <ScanMissionModal
+          mod={selectedModule}
+          onClose={() => setSelectedModule(null)}
+          onScan={() => { setSelectedModule(null); navigate('/scan'); }}
+        />
+      )}
+
+      {selectedModule && selectedModule.number !== 2 && (
         <ModuleModal
           mod={selectedModule}
           onClose={() => setSelectedModule(null)}
