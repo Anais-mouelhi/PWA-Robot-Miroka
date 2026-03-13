@@ -30,3 +30,15 @@ export async function deleteModule(id: string) {
 export async function updatePosition(id: string, x: number, y: number) {
   await setDoc(doc(db, COL, id), { position: { x, y } }, { merge: true });
 }
+
+const SETTINGS_COL = 'settings';
+
+export async function saveRobotPosition(x: number, y: number) {
+  await setDoc(doc(db, SETTINGS_COL, 'robot'), { x, y });
+}
+
+export function subscribeRobotPosition(cb: (pos: { x: number; y: number } | null) => void) {
+  return onSnapshot(doc(db, SETTINGS_COL, 'robot'), (snap) => {
+    cb(snap.exists() ? (snap.data() as { x: number; y: number }) : null);
+  });
+}

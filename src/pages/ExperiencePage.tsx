@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useModules } from '../hooks/useModules';
 import { DEMO_MODULES } from '../data/demoModules';
 import { useProgress } from '../context/ProgressContext';
+import { subscribeRobotPosition } from '../lib/modules';
 import type { Module } from '../types';
 
 /* Positions par défaut le long du chemin (utilisées si aucune position Firestore) */
@@ -249,6 +250,19 @@ export function ExperiencePage() {
     .slice().sort((a, b) => a.number - b.number);
   const { validated } = useProgress();
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
+  const [robotPos, setRobotPos] = useState<{ x: number; y: number }>(() => {
+    try {
+      const saved = localStorage.getItem('miroki-robot-position');
+      return saved ? JSON.parse(saved) : { x: 50, y: 55 };
+    } catch { return { x: 50, y: 55 }; }
+  });
+
+  useEffect(() => {
+    const unsub = subscribeRobotPosition((pos) => {
+      if (pos) setRobotPos(pos);
+    });
+    return unsub;
+  }, []);
 
   const done = displayModules.filter((m) => validated.includes(m.id)).length;
   const total = displayModules.length;
@@ -293,28 +307,19 @@ export function ExperiencePage() {
       <main className="absolute inset-0 z-10 overflow-hidden">
 
         {/* Robot + bulle */}
-        {(() => {
-          let rx = 50, ry = 55;
-          try {
-            const saved = localStorage.getItem('miroki-robot-position');
-            if (saved) { const p = JSON.parse(saved); rx = p.x; ry = p.y; }
-          } catch { /* ignore */ }
-          return (
-            <>
-              {/* Bulle */}
-              <div className="absolute z-25 pointer-events-none"
-                style={{ left: `${rx}%`, top: `${ry}%`, transform: 'translate(32px, -120%)' }}>
-                <div className="text-white font-semibold text-center leading-snug px-4 py-3"
-                  style={{ fontSize: 14, border: '1.5px solid rgba(255,255,255,0.6)', background: 'rgba(10,6,30,0.55)', backdropFilter: 'blur(4px)', borderRadius: 4, whiteSpace: 'nowrap' }}>
-                  Alors, on arrive ?<br />Je vous attends !!
-                </div>
-              </div>
-              {/* Robot */}
-              <img src="/robot-plan.svg" alt="Miroki" className="absolute z-20 pointer-events-none"
-                style={{ width: 80, left: `${rx}%`, top: `${ry}%`, transform: 'translate(-50%, -50%)', filter: 'drop-shadow(0 0 18px #a855f799)' }} />
-            </>
-          );
-        })()}
+        <>
+          {/* Bulle */}
+          <div className="absolute z-25 pointer-events-none"
+            style={{ left: `${robotPos.x}%`, top: `${robotPos.y}%`, transform: 'translate(32px, -120%)' }}>
+            <div className="text-white font-semibold text-center leading-snug px-4 py-3"
+              style={{ fontSize: 14, border: '1.5px solid rgba(255,255,255,0.6)', background: 'rgba(10,6,30,0.55)', backdropFilter: 'blur(4px)', borderRadius: 4, whiteSpace: 'nowrap' }}>
+              Alors, on arrive ?<br />Je vous attends !!
+            </div>
+          </div>
+          {/* Robot */}
+          <img src="/robot-plan.svg" alt="Miroki" className="absolute z-20 pointer-events-none"
+            style={{ width: 80, left: `${robotPos.x}%`, top: `${robotPos.y}%`, transform: 'translate(-50%, -50%)', filter: 'drop-shadow(0 0 18px #a855f799)' }} />
+        </>
 
         {/* Modules positionnés — position Firestore (admin) en priorité, PATH_POSITIONS en fallback */}
         {displayModules.map((mod, i) => {

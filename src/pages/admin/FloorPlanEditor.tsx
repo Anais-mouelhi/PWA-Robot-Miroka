@@ -2,7 +2,7 @@ import { useRef, useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useModules } from '../../hooks/useModules';
 import { DEMO_MODULES } from '../../data/demoModules';
-import { updatePosition } from '../../lib/modules';
+import { updatePosition, saveRobotPosition } from '../../lib/modules';
 import type { Module } from '../../types';
 
 /* Positions par défaut le long du chemin — identique à ExperiencePage */
@@ -93,6 +93,7 @@ export function FloorPlanEditor() {
 
     if (id === '__robot__') {
       localStorage.setItem(ROBOT_LS_KEY, JSON.stringify(robotPos));
+      saveRobotPosition(robotPos.x, robotPos.y).catch(() => {});
       setRobotSaved(true);
       setTimeout(() => setRobotSaved(false), 1500);
       return;
