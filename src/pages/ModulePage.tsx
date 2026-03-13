@@ -15,7 +15,6 @@ export function ModulePage() {
   const mod = displayModules.find((m) => m.id === id);
   const { validated, validate } = useProgress();
 
-  const alreadyValidated = validated.includes(id ?? '');
   const [step, setStep] = useState<'challenge' | 'validated'>('challenge');
   const [chosen, setChosen] = useState<number | null>(null);
   const [wrong, setWrong] = useState(false);
